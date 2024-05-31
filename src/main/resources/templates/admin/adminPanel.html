@@ -1,0 +1,18 @@
+<div th:fragment="adminPanel">
+    <div class="position-sticky">
+        <ul class="nav flex-column">
+            <li class="button">
+                <a href="/admin"
+                   th:classappend="${currentRole == 'ADMIN'} ? 'active' : null"
+                   th:class="${currentRole == 'ADMIN'} ? 'btn btn-primary w-100' : 'btn btn-secondary w-100'"
+                   style="margin-bottom: 10px;">Admin</a>
+            </li>
+            <li class="button">
+                <a href="/admin/profile"
+                   th:classappend="${currentRole == 'Profile'} ? 'active' : null"
+                   th:class="${currentRole == 'Profile'} ? 'btn btn-primary w-100' : 'btn btn-secondary w-100'"
+                   style="margin-bottom: 10px;">User</a>
+            </li>
+        </ul>
+    </div>
+</div>
