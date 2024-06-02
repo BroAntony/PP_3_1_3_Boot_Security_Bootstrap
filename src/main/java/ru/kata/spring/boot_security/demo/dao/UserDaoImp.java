@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.RoleUser;
@@ -61,7 +62,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public Optional<User> findUserByName(String userName) {
-        User user = em.createQuery("SELECT u FROM User u WHERE u.email = :username", User.class)
+        User user = em.createQuery("SELECT u FROM User u JOIN FETCH u.roles WHERE u.email = :username", User.class)
                 .setParameter("username", userName)
                 .getResultList()
                 .stream()

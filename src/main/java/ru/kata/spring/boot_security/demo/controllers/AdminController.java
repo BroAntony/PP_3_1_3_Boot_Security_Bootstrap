@@ -41,17 +41,6 @@ public class AdminController {
 
     @PostMapping("/addUser")
     public String addUser(User user) {
-        Set<Role> roleSet = new HashSet<>();
-        if (user.getRoles() != null) {
-            for (Role roleUser : user.getRoles()) {
-                Optional<Role> role = roleService.findRoleByName(roleUser.getRoleName());
-                role.ifPresent(roleSet::add);
-            }
-        } else {
-            Optional<Role> role = roleService.findRoleByName("USER");
-            role.ifPresent(roleSet::add);
-        }
-        user.setRoles(roleSet);
         userService.addUser(user);
         return "redirect:/admin";
     }
@@ -78,8 +67,8 @@ public class AdminController {
     @GetMapping("/editUser/{id}")
     public String showEditUser(@PathVariable("id") int id, Model model) {
         User user = userService.findUserById(id);
-        model.addAttribute("userToEdit", user);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("userToEdit", user);
         model.addAttribute("authUser", auth.getPrincipal());
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("newUser", new User());
@@ -90,23 +79,9 @@ public class AdminController {
 
     @PostMapping("/updateUser")
     public String updateUser(User user) {
-        if (user.getRoles() != null) {
-            Set<Role> roles = user.getRoles();
-            Set<Role> newRoles = new HashSet<>();
-            for (Role role : roles) {
-                roleService.findRoleByName(role.getRoleName()).ifPresent(newRoles::add);
-            }
-            user.setRoles(newRoles);
-        } else {
-            Set<Role> roleSet = new HashSet<>();
-            Optional<Role> role = roleService.findRoleByName("USER");
-            role.ifPresent(roleSet::add);
-            user.setRoles(roleSet);
-        }
         userService.updateUser(user);
         return "redirect:/admin";
     }
-    // ... твой существующий код ...
 
     @GetMapping("/profile")
     public String userProfile(Model model) {
